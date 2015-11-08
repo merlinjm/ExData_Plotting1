@@ -1,0 +1,17 @@
+library(lubridate)
+png(filename = "plot4.png",width = 480, height = 480)
+par(mfrow = c(2, 2))
+dat<-read.table("household_power_consumption.txt",sep=";",header=TRUE,stringsAsFactors=FALSE,na.strings="?")
+dat$Date<-as.Date(dat$Date, "%d/%m/%Y")
+subdat<-subset(dat,dat$Date > as.Date("2007-01-31") & dat$Date < as.Date("2007-02-03"))
+subdat$Time<-ymd_hms(paste(subdat$Date, subdat$Time))
+plot(subdat$Time,subdat$Global_active_power,type="l", ylab = "Global Active Power (kilowatts)",xlab="")
+plot(subdat$Time,subdat$Voltage,type="l", ylab = "Voltage",xlab="datetime")
+plot(subdat$Time,subdat$Sub_metering_1,type="l",ylab="Energy sub metering",xlab="")
+lines(subdat$Time,subdat$Sub_metering_2,col="red")
+lines(subdat$Time,subdat$Sub_metering_3,col="blue")
+legend("topright",c("Sub_metering_1","Sub_metering_2","Sub_metering_3"),lty=c(1,1,1),col=c("black","red","blue"))
+plot(subdat$Time,subdat$Global_reactive_power,type="l", ylab = "Global_reactive_power",xlab="datetime")
+dev.off()
+
+
